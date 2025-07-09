@@ -1,6 +1,4 @@
 import re
-from attackcti import attack_client
-from collections import defaultdict
 from mitreattack.stix20 import MitreAttackData
 from rich.console import Console
 

@@ -53,19 +53,7 @@ python main.py -f samples/report.txt
 
 ## Sample Output
 
-```
-Extracted Indicators of compromise (IOCs)
------------------------------------------
-IP:
-- 192.168.1.1
-DOMAIN:
-- example.com
-
-Extracted Tactics, Techniques and Procedures (TTPs)
----------------------------------------------------
-INITIAL ACCESS:
-T1059     : Command and Scripting Interpreter         https://attack.mitre.org/techniques/T1059/
-```
+![image](assets/example_output.png)
 
 ## License
 
