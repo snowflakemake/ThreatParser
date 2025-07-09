@@ -1,0 +1,53 @@
+[Threat Summary]
+
+Between June 18–24, 2025, our SOC observed a targeted intrusion against multiple finance-sector endpoints in Northern Europe. The threat activity is attributed to the APT group "Gold Falcon", known for conducting espionage-motivated attacks against government and banking institutions.
+
+[Initial Access and Execution]
+
+The initial vector was a spear-phishing campaign delivering malicious documents exploiting CVE-2024-21412. When executed, the document launched a heavily obfuscated PowerShell script (T1059) to download the second-stage payload from:
+
+- http://secure-update-gateway[.]com/install.bin
+- https://cdn.exploit-sinkhole[.]org/loader.ps1
+
+The payload was saved as `C:\Users\Public\winupdate.exe` and is identified by the SHA256 hash:
+
+`f7e0a76512bb0caa9e1d3c1133b7793ae2cb423c97f07c8f28a0c8a237e5f69f`
+
+[Lateral Movement and Credential Access]
+
+Post-exploitation, the adversary used WMI and PsExec for lateral movement (T1021). Credential dumping was achieved via a modified version of Mimikatz (T1003) executed from memory.
+
+Observed internal beaconing was directed to:
+
+- 45.76.200.55 (unresolved)
+- 161.35.12.88 (hosted in New Jersey, US)
+
+[Persistence and Defense Evasion]
+
+Persistence was established using registry run keys (T1547) and the creation of a scheduled task named “WinServiceUpdate” running daily at login.
+
+To evade detection, attackers used:
+
+- Binary padding (T1027.001)
+- DLL side-loading (T1574.002)
+- Process injection (T1055)
+
+[Exfiltration and Impact]
+
+Sensitive customer data was compressed using `7z.exe` and exfiltrated over HTTPS (T1041) to the following endpoint:
+
+- https://data-sync-reporting[.]com/upload
+
+[Risk Assessment]
+
+Due to the group’s TTPs and targeting profile, we assess with high confidence this intrusion is part of a broader campaign against European financial institutions.
+
+[MITRE ATT&CK Summary]
+- T1059.001 – PowerShell
+- T1021 – Remote Services
+- T1003 – Credential Dumping
+- T1547 – Persistence via Registry
+- T1027.001 – Obfuscated Files or Information
+- T1574.002 – DLL Side-Loading
+- T1055 – Process Injection
+- T1041 – Exfiltration Over C2 Channel

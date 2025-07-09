@@ -1,0 +1,11 @@
+On June 23rd, our SOC detected unusual activity originating from 192.168.56.23 involving the execution of powershell.exe with obfuscated parameters. The script attempted to download a payload from hxxp[:]//malicious-site[.]ru/dropper.ps1.
+
+The SHA256 hash of the script was: c4a8f23be45684a1db91e5312173a9c59f0c4b6d2f3c8db9e5a7d9edaf34c2a1.
+
+Once executed, the script used reg.exe to add a new Run key for persistence. It then injected into explorer.exe using reflective DLL injection. The behavior aligns with MITRE techniques T1059.001 (PowerShell), T1055.002 (Portable Executable Injection), and T1547.001 (Registry Run Keys).
+
+DNS beaconing was observed to cnc[.]evilcorp[.]com, every 5 minutes, using a custom base64-encoded user-agent string.
+
+Associated email address: attacker@evilmail.com
+
+Further, credentials were harvested using lsass.exe memory scraping, consistent with T1003.001 (LSASS Memory).
