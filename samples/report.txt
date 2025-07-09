@@ -11,7 +11,7 @@ The initial vector was a spear-phishing campaign delivering malicious documents 
 
 The payload was saved as `C:\Users\Public\winupdate.exe` and is identified by the SHA256 hash:
 
-`f7e0a76512bb0caa9e1d3c1133b7793ae2cb423c97f07c8f28a0c8a237e5f69f`
+`cb1553a3c88817e4cc774a5a93f9158f6785bd3815447d04b6c3f4c2c4b21ed7`
 
 [Lateral Movement and Credential Access]
 

@@ -7,8 +7,8 @@ class ThreatReportParser:
         with open(report_path, 'r', encoding='utf-8') as f:
             self.text = f.read()
 
-    def extract_iocs(self):
-        return extract_iocs(self.text)
+    def extract_iocs(self, console, lookup=True):
+        return extract_iocs(self.text, console, lookup=lookup)
     
     def extract_ttps(self, console):
         return extract_ttps(self.text, console)

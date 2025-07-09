@@ -26,13 +26,14 @@ samples/
 ## Requirements
 
 - Python 3.10+
+- [python-dotenv](https://pypi.org/project/python-dotenv/)
 - [rich](https://pypi.org/project/rich/)
 - [mitreattack-python](https://github.com/mitre-attack/mitreattack-python/tree/master)
 - [tldextract](https://pypi.org/project/tldextract/)
 
 Install dependencies:
 ```sh
-pip install rich mitreattack-python tldextract
+pip install rich mitreattack-python tldextract python-dotenv
 ```
 
 ## Usage
@@ -43,6 +44,11 @@ python main.py -f samples/report.txt
 ```
 
 - Use `-f` or `--file` to specify the path to your report file.
+
+To send found hashes to VirusTotal, set the `VT_API_KEY` in a `.env` file:
+```
+VT_API_KEY=your_virustotal_api_key
+```
 
 ## How it Works
 

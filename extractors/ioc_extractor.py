@@ -2,7 +2,7 @@
 import re
 import tldextract
 
-def extract_iocs(text):
+def extract_iocs(text, console, lookup=True):
     iocs = []
 
     # Basic patterns
@@ -34,6 +34,22 @@ def extract_iocs(text):
                     # If it's not a valid domain, we can still add it as a file name
                     iocs.append({'type': 'file', 'value': normalized})
                 seen.add(normalized)
+        elif ioc_type == 'hash':
+            matches = re.findall(pattern, text)
+            for match in matches:
+                normalized = match.lower()
+                if lookup:
+                    hash_lookup = lookup_hash(normalized)
+                    if hash_lookup == -1:
+                        console.print("[bold red]VirusTotal API key not found. Will run without sending hashes to VirusTotal.[/bold red]")
+                        lookup = False
+                        hash_lookup = None
+                if normalized not in seen:
+                    if hash_lookup:
+                        iocs.append({'type': 'hash', 'value': normalized, 'lookup': hash_lookup.get('data', {}).get('attributes', {}).get('signature_info', {}).get('product', 'Unknown')})
+                    else:
+                        iocs.append({'type': 'hash', 'value': normalized})
+                    seen.add(normalized)
         else:
             matches = re.findall(pattern, text)
             for match in matches:
@@ -50,3 +66,30 @@ def is_valid_domain(text: str):
         return bool(extracted.domain and extracted.suffix)
     except Exception:
         return False
+    
+def lookup_hash(file_hash):
+    import os
+    from dotenv import load_dotenv
+    import requests
+
+    # Load variables from .env
+    load_dotenv()
+
+    # Access the key
+    API_KEY = os.getenv("VT_API_KEY")
+
+    if not API_KEY:
+        return -1
+    
+    url = f"https://www.virustotal.com/api/v3/files/{file_hash}"
+    headers = {
+        "x-apikey": API_KEY
+    }
+
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return data
+    else:
+        return None
