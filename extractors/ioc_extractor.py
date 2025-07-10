@@ -44,9 +44,10 @@ def extract_iocs(text, console, lookup=True):
                         console.print("[bold red]VirusTotal API key not found. Will run without sending hashes to VirusTotal.[/bold red]")
                         lookup = False
                         hash_lookup = None
+                else: hash_lookup = None
                 if normalized not in seen:
                     if hash_lookup:
-                        iocs.append({'type': 'hash', 'value': normalized, 'lookup': hash_lookup.get('data', {}).get('attributes', {}).get('signature_info', {}).get('product', 'Unknown')})
+                        iocs.append({'type': 'hash', 'value': normalized, 'name': hash_lookup.get('data', {}).get('attributes', {}).get('meaningful_name', 'Unknown'), 'ref': 'https://www.virustotal.com/gui/file/' + normalized})
                     else:
                         iocs.append({'type': 'hash', 'value': normalized})
                     seen.add(normalized)
@@ -67,7 +68,7 @@ def is_valid_domain(text: str):
     except Exception:
         return False
     
-def lookup_hash(file_hash):
+def lookup_hash(file_hash) -> dict:
     import os
     from dotenv import load_dotenv
     import requests

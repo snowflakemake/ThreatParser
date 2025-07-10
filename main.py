@@ -1,13 +1,15 @@
 from rich.console import Console
 from parser import ThreatReportParser
+import export
 import argparse
 console = Console()
 
 def main():    
     parser = argparse.ArgumentParser(prog='Threat Parser', description='A simple program to extract IOCs and TTPs from a text file')
     parser.add_argument('-f', '--file', default='samples/report.txt')
-    parser.add_argument('--no-lookup', action='store_false', dest='lookup',
+    parser.add_argument('-n', '--no-lookup', action='store_false', dest='lookup',
                         help='Disable VirusTotal hash lookup. Useful if you do not have a VT API key')
+    parser.add_argument('-o', '--output', help='Output file to save the extracted IOCs and TTPs')
 
     args = parser.parse_args()
 
@@ -29,8 +31,8 @@ def main():
             seen.add(ioc['type'])
             console.print(f"[bold yellow]{ioc['type'].upper()}[/bold yellow]:")
 
-        if 'lookup' in ioc:
-            console.print(f"{ioc['value']:<35}: [bold cyan]{ioc['lookup']}[/bold cyan]")
+        if 'name' in ioc:
+            console.print(f"{ioc['value']:<35}: [bold cyan]{ioc['name']}[/bold cyan]")
         else:
             console.print(f"[bold white]- {ioc['value']}[/bold white]")
 
@@ -46,6 +48,12 @@ def main():
 
         console.print(f"[bold cyan]{ttp['value']:<10}[/bold cyan]: {ttp['name']:<50}{ttp['ref']}")
     
+    if args.output:
+        console.line()
+        with console.status("[bold green]Exporting to CSV...[/bold green]", spinner="dots"):
+            export.export_to_csv([iocs, ttps], args.output, 2)
+        
+        console.print(f"[bold green]Exported to {args.output}[/bold green]")
 
 if __name__ == "__main__":
     main()

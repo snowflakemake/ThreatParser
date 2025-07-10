@@ -44,11 +44,19 @@ python main.py -f samples/report.txt
 ```
 
 - Use `-f` or `--file` to specify the path to your report file.
+- Use `-n` or `--no-lookup` to disable VirusTotal hash lookups.
+- Use `-o` or `--output` to specify an output file for the extracted IOCs and TTPs.
+
+[!NOTE]
+For now, only csv output is supported.
 
 To send found hashes to VirusTotal, set the `VT_API_KEY` in a `.env` file:
 ```
 VT_API_KEY=your_virustotal_api_key
 ```
+
+[!NOTE]
+The VirusTotal API key is optional. If not provided, hash lookups will be skipped.
 
 ## How it Works
 
