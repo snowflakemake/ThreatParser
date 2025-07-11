@@ -9,7 +9,7 @@ def extract_iocs(text, console, lookup=True):
     ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
     hash_pattern = r'\b[a-fA-F0-9]{32,64}\b'
     domain_file_pattern = r'\b(?:[a-zA-Z0-9-]+(?:\.|\[\.\]))+[a-zA-Z]{2,}\b'
-    url_pattern = r'https?://[^\s]+'
+    url_pattern = r'\bh(?:t|x){2}ps?(?::|\[:])\/\/[^\s]+\b'
     email_pattern = r'\b\S+@\S+\.\S+\b'
 
     patterns = {
@@ -54,7 +54,7 @@ def extract_iocs(text, console, lookup=True):
         else:
             matches = re.findall(pattern, text)
             for match in matches:
-                normalized = match.replace('[.]', '.')
+                normalized = match.replace('[.]', '.').replace('hxxp', 'http').replace('hxxps', 'https').replace('[:]', ':')
                 if normalized not in seen:
                     iocs.append({'type': ioc_type, 'value': normalized})
                     seen.add(normalized)

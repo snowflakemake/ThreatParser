@@ -24,6 +24,9 @@ def main():
         exit(1)
 
     console.rule("[bold green]Extracted Indicators of compromise (IOCs)[/bold green]")
+    if not iocs:
+        console.print("[bold red]No IOCs found in the report[/bold red]")
+        
     seen = set()
     for ioc in iocs:
         if ioc['type'] not in seen:
@@ -40,6 +43,9 @@ def main():
     seen = set()
     console.line()
     console.rule("[bold blue]Extracted Tactics, Techniques and Procedures (TTPs)[/bold blue]")
+    if not ttps:
+        console.print("[bold red]No TTPs found in the report[/bold red]")
+
     for ttp in ttps:
         if ttp['phase'] not in seen:
             if not len(seen) == 0:
@@ -49,7 +55,7 @@ def main():
 
         console.print(f"[bold cyan]{ttp['value']:<10}[/bold cyan]: {ttp['name']:<50}{ttp['ref']}")
     
-    if args.attribute > 0:
+    if args.attribute > 0 and len(ttps) > 0:
         console.line()
         try:
             with console.status("[bold yellow]Guessing possible adversaries from TTPs...", spinner="dots"):

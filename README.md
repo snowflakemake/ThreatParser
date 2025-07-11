@@ -4,6 +4,10 @@ Threat Parser is a simple Python tool to extract Indicators of Compromise (IOCs)
 
 This tool is designed to help analysts quickly identify key information from threat reports, making it easier to understand the threats and potential adversaries involved. Please note that this is a work in progress and may not cover all edge cases or formats of threat reports. Be aware of potential false positives or negatives in the extraction process.
 
+The tool uses the [MITRE ATT&CK](https://attack.mitre.org/) framework to map TTPs and identify potential adversaries based on the techniques observed in the reports. It also supports VirusTotal hash lookups to provide additional context for extracted IOCs.
+
+The TTPs and IOCs are extracted using regular expressions and string matching techniques, and the results are displayed in a user-friendly format.
+
 ## Features
 
 - Extracts IOCs (such as IPs, domains, hashes) from text files.

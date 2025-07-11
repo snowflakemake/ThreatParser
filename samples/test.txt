@@ -1,0 +1,11 @@
+On June 23rd, our SOC detected unusual activity originating from 19268.56.23 involving the execution of powershellxe with obfuscated parameters. The script attempted to download a payload from .
+
+The SHA256 hash of the script was: .
+
+Once executed, the script used re to add a new Run key for persistence. It then injected into exploreexe using reflective DLL injection. The behavior aligns with MITRE techniques XXXXX (PowerShell), XXXXX (Portable Executable Injection), and XXXXXX (Registry Run Keys).
+
+DNS beaconing was observed to cnc, every 5 minutes, using a custom base64-encoded user-agent string.
+
+Associated email address: attackerevilmail
+
+Further, credentials were harvested using lsasse memory scraping, consistent with XXXXX (LSASS Memory).
