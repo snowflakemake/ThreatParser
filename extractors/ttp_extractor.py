@@ -2,7 +2,7 @@ import re
 from mitreattack.stix20 import MitreAttackData
 from rich.console import Console
 
-def extract_ttps(text, console):
+def extract_ttps(text, console, mitre_attack_data=None):
     ttps = []
 
     # Basic patterns for TTPs
@@ -11,9 +11,6 @@ def extract_ttps(text, console):
     matches = re.findall(ttp_pattern, text)
     if len(matches) == 0:
         return ttps
-    
-    with console.status("[bold yellow]Loading TTP mappings...", spinner="dots"):
-        mitre_attack_data = MitreAttackData("data/enterprise-attack.json")
     
     seen = set()
 

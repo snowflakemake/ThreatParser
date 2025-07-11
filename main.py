@@ -10,11 +10,12 @@ def main():
     parser.add_argument('-n', '--no-lookup', action='store_false', dest='lookup',
                         help='Disable VirusTotal hash lookup. Useful if you do not have a VT API key')
     parser.add_argument('-o', '--output', help='Output file to save the extracted IOCs and TTPs')
+    parser.add_argument('-a', '--attribute', action='store_true', help='Guess adversaries from TTPs')
 
     args = parser.parse_args()
 
     report_path = args.file
-    parser = ThreatReportParser(report_path)
+    parser = ThreatReportParser(report_path, console)
     try:
         iocs = parser.extract_iocs(console, lookup=args.lookup)
         ttps = parser.extract_ttps(console)
@@ -48,6 +49,21 @@ def main():
 
         console.print(f"[bold cyan]{ttp['value']:<10}[/bold cyan]: {ttp['name']:<50}{ttp['ref']}")
     
+    if args.attribute:
+        console.line()
+        try:
+            with console.status("[bold yellow]Guessing possible adversaries from TTPs...", spinner="dots"):
+                groups = parser.extract_possible_groups(console, ttps)
+            console.rule("[bold magenta]Possible adversaries from TTPs[/bold magenta]")
+            if not groups:
+                console.print("[bold red]No groups matched the observed TTPs[/bold red]")
+            else:
+                for group, data in groups:
+                    console.print(f"[bold yellow]{group+':':<15}[/bold yellow] {data['match_count']:>5}/{int(round(data['match_count']/data['probability'], 0))} matches | Probability: {data['probability']}")
+        except Exception as e:
+            console.print_exception()
+            exit(1)
+
     if args.output:
         console.line()
         with console.status("[bold green]Exporting to CSV...[/bold green]", spinner="dots"):

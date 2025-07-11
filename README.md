@@ -13,6 +13,7 @@ Threat Parser is a simple Python tool to extract Indicators of Compromise (IOCs)
 ```
 main.py
 parser.py
+export.py
 data/
     enterprise-attack.json
 extractors/
