@@ -18,5 +18,5 @@ class ThreatReportParser:
     def extract_ttps(self, console):
         return extract_ttps(self.text, console, mitre_attack_data=self.mitre_attack_data)
     
-    def extract_possible_groups(self, console, ttps):
-        return extract_groups(self.text, console, ttps, attack_data=self.mitre_attack_data)
+    def extract_possible_groups(self, console, ttps, numbers_of_groups):
+        return extract_groups(self.text, console, ttps, attack_data=self.mitre_attack_data, numbers_of_groups=numbers_of_groups)

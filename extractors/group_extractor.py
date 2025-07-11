@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-def extract_groups(self, console, ttps, attack_data=None):
+def extract_groups(self, console, ttps, attack_data, numbers_of_groups):
 
     observed_techniques = {ttp['value'] for ttp in ttps if ttp['type'] == 'TTP'}
 
@@ -21,7 +21,7 @@ def extract_groups(self, console, ttps, attack_data=None):
     for group, data in ranked:
         data["probability"] = round(data["match_count"] / total_ttps, 2)
 
-    return ranked[:5]  # Top 5 most likely groups
+    return ranked[:numbers_of_groups]  # Top most likely groups
 
 def get_stix_id_from_tid(attack_data, tid):
     for technique in attack_data.get_techniques():
